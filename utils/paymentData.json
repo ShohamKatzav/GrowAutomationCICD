@@ -1,0 +1,14 @@
+{
+    "validCard": {
+        "number": "4580458045804580",
+        "exp_month": "03",
+        "exp_year": "2030",
+        "cvc": "123"
+    },
+    "invalidCard": {
+        "number": "4000000000009995",
+        "exp_month": "12",
+        "exp_year": "34",
+        "cvc": "123"
+    }
+}
