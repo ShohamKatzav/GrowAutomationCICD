@@ -19,7 +19,8 @@ test('API @invalid sum payment', async () => {
   await expect(response.ok()).toBeTruthy();
   const result = await response.json();
   const message = result.err.message;
-  await expect(message?.includes("לא ניתן לשלם בסכום הנמוך מ- 0")).toBeTruthy();
+  await expect(message).toBeTruthy();
+  await expect(message.includes("לא ניתן לשלם בסכום הנמוך מ- 0")).toBeTruthy();
 });
 
 test('API @invalid userId payment', async () => {
@@ -29,7 +30,8 @@ test('API @invalid userId payment', async () => {
   await expect(response.ok()).toBeTruthy();
   const result = await response.json();
   const message = result.err.message;
-  await expect(message?.includes("פרמטר קוד זיהוי אינו תקין userId")).toBeTruthy();
+  await expect(message).toBeTruthy();
+  await expect(message.includes("פרמטר קוד זיהוי אינו תקין userId")).toBeTruthy();
 });
 
 test('API @invalid paymentNum payment', async () => {
@@ -39,7 +41,8 @@ test('API @invalid paymentNum payment', async () => {
   await expect(response.ok()).toBeTruthy();
   const result = await response.json();
   const message = result.err.message;
-  await expect(message?.includes("תשלומים")).toBeTruthy();
+  await expect(message).toBeTruthy();
+  await expect(message.includes("תשלומים")).toBeTruthy();
 });
 
 test('API @invalid fullname payment', async () => {
@@ -49,7 +52,8 @@ test('API @invalid fullname payment', async () => {
   await expect(response.ok()).toBeTruthy();
   const result = await response.json();
   const message = result.err.message;
-  await expect(message?.includes("שם וטלפון או שאינו תקין")).toBeTruthy();
+  await expect(message).toBeTruthy();
+  await expect(message.includes("שם וטלפון או שאינו תקין")).toBeTruthy();
 });
 
 test('API @invalid phone payment', async () => {
@@ -59,6 +63,7 @@ test('API @invalid phone payment', async () => {
   await expect(response.ok()).toBeTruthy();
   const result = await response.json();
   const message = result.err.message;
-  await expect(message?.includes("שם וטלפון או שאינו תקין")).toBeTruthy();
+  await expect(message).toBeTruthy();
+  await expect(message.includes("שם וטלפון או שאינו תקין")).toBeTruthy();
 });
 
