@@ -1,4 +1,5 @@
 class PaymentAPI {
+
     constructor(apiContext) {
         this.apiContext = apiContext;
     }
@@ -14,19 +15,18 @@ class PaymentAPI {
         }
     }
 
-    createForm(data) {
+    createOrderForm(data) {
         const form = new FormData();
-        form.set('pageCode', data.pageCode);
-        form.set('userId', data.userId);
-        form.set('sum', data.sum);
-        form.set('paymentNum', data.paymentNum);
-        form.set('description', data.description);
-        form.set('pageField[fullName]', data.fullName);
-        form.set('pageField[phone]', data.phone);
-        form.set('pageField[email]', data.email);
+        form.append('pageCode', data.pageCode);
+        form.append('userId', data.userId);
+        form.append('sum', data.sum);
+        form.append('paymentNum', data.paymentNum);
+        form.append('description', data.description);
+        form.append('pageField[fullName]', data.fullName);
+        form.append('pageField[phone]', data.phone);
+        form.append('pageField[email]', data.email);
         return form;
     }
-
 
 }
 

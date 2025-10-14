@@ -1,24 +1,68 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
+import { test, expect, request } from '@playwright/test';
+const { PaymentAPI } = require('../utils/PaymentAPI');
+const { orderData, url } = JSON.parse(JSON.stringify(require('../utils/orderData.json')));
 
-test('API payment', async ({ request }) => {
+let paymentAPI;
+let response;
 
-  const url = "https://sandbox.meshulam.co.il/api/light/server/1.0/createPaymentProcess"
+test.beforeEach(async () => {
+  const apiContext = await request.newContext();
+  paymentAPI = new PaymentAPI(apiContext);
+});
 
-  const form = new FormData();
-  form.set('pageCode', 'e19e0b687744');
-  //form.set('userId', '52e95954cd5c1311');
-  form.set('sum', '1');
-  form.set('paymentNum', '1');
-  form.set('description', 'ORDER123');
-  form.set('pageField[fullName]', 'שם מלא');
-  form.set('pageField[phone]', '0523292847');
-  form.set('pageField[email]', 'shohamkatzav95@gmail.com');
-  const response = await request.post(url, {
-    form
-  });
 
+test('API @missing sum payment', async () => {
+  const { sum, ...orderWithoutSum } = orderData;
+  const form = paymentAPI.createOrderForm(orderWithoutSum);
+  response = await paymentAPI.createPayment(url, form);
+  await expect(response.ok()).toBeTruthy();
   const result = await response.json();
   const message = result.err.message;
-  await expect(message).toEqual("חסרים נתונים:userId");
+  console.log(message);
+  await expect(message.includes("לא ניתן לשלם בסכום הנמוך מ- 0")).toBeTruthy();
 });
+
+test('API @missing userId payment', async () => {
+  const { userId, ...orderWithoutUserId } = orderData;
+  const form = paymentAPI.createOrderForm(orderWithoutUserId);
+  response = await paymentAPI.createPayment(url, form);
+  await expect(response.ok()).toBeTruthy();
+  const result = await response.json();
+  const message = result.err.message;
+  console.log(message);
+  await expect(message.includes("פרמטר קוד זיהוי אינו תקין userId")).toBeTruthy();
+});
+
+test('API @missing paymentNum payment', async () => {
+  const { paymentNum, ...orderWithoutPaymentNum } = orderData;
+  const form = paymentAPI.createOrderForm(orderWithoutPaymentNum);
+  response = await paymentAPI.createPayment(url, form);
+  await expect(response.ok()).toBeTruthy();
+  const result = await response.json();
+  const message = result.err.message;
+  console.log(message);
+  await expect(message.includes("תשלומים")).toBeTruthy();
+});
+
+test('API @missing fullname payment', async () => {
+  const { fullName, ...orderWithoutFullName } = orderData;
+  const form = paymentAPI.createOrderForm(orderWithoutFullName);
+  response = await paymentAPI.createPayment(url, form);
+  await expect(response.ok()).toBeTruthy();
+  const result = await response.json();
+  const message = result.err.message;
+  console.log(message);
+  await expect(message.includes("לא נשלח שם וטלפון")).toBeTruthy();
+});
+
+test('API @missing phone payment', async () => {
+  const { phone, ...orderWithoutPhone } = orderData;
+  const form = paymentAPI.createOrderForm(orderWithoutPhone);
+  response = await paymentAPI.createPayment(url, form);
+  await expect(response.ok()).toBeTruthy();
+  const result = await response.json();
+  const message = result.err.message;
+  console.log(message);
+  await expect(message.includes("לא נשלח שם וטלפון")).toBeTruthy();
+});
+
